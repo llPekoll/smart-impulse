@@ -25,11 +25,11 @@ SECRET_KEY = "pii9nraxe4@iyv&z$ztuc2vbjgh_@fr%kzc-cn66tl5*1rbnh-"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['http://localhost:5500','localhost']
+ALLOWED_HOSTS = ["http://localhost:5500", "localhost"]
 CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5500',
+    "http://localhost:5500",
 ]
 
 REST_FRAMEWORK = {
@@ -43,7 +43,7 @@ REST_FRAMEWORK = {
 INSTALLED_APPS = [
     "smart",
     # 'django.contrib.admin',
-    'corsheaders',
+    "corsheaders",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -52,9 +52,9 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.BrokenLinkEmailsMiddleware',
-    'django.middleware.common.CommonMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.BrokenLinkEmailsMiddleware",
+    "django.middleware.common.CommonMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",

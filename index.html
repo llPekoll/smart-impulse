@@ -60,13 +60,14 @@
 			const ventil = response.ventilation.map((e)=>[e[1]=new Date(e[1]),e[0]]);
 			const eclairage = response.eclairage.map((e)=>[e[1]=new Date(e[1]),e[0]]);
 			const traitement = response.traitement.map((e)=>[e[1]=new Date(e[1]),e[0]]);
+			const assenseurs = response.assenseurs.map((e)=>[e[1]=new Date(e[1]),e[0]]);
+			const puissance = response.puissance.map((e)=>[e[1]=new Date(e[1]),e[0]]);
 			const options = {
 
 				xAxis: {
 					type: 'time',
 					name:'Time',
 					axisLine: {
-						symbol: 'arrow',
 						lineStyle: {
 						  type: 'dashed'
 						}
@@ -119,7 +120,33 @@
 						data: eclairage,
 						type: 'line',
 						areaStyle: {
+							color: '#f0f',
+							opacity: 0.5
+						  },
+						smooth: true,
+						yAxisIndex: 0,
+						animationDuration: 500,
+						symbol: 'none'
+					},
+					{
+						name: "assenseurs",
+						data: assenseurs,
+						type: 'line',
+						areaStyle: {
 							color: '#f00',
+							opacity: 0.5
+						  },
+						smooth: true,
+						yAxisIndex: 0,
+						animationDuration: 500,
+						symbol: 'none'
+					},
+					{
+						name: "puissance",
+						data: puissance,
+						type: 'line',
+						areaStyle: {
+							color: '#0f0',
 							opacity: 0.5
 						  },
 						smooth: true,

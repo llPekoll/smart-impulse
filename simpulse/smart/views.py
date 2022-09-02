@@ -64,8 +64,30 @@ class DataList(mixins.ListModelMixin, generics.GenericAPIView):
 class GetPointCloud(APIView):
     def get(self, request):
         data = GraphsData.objects.all()
-        ventillation_values = [[json.loads(d.json_data).get('2')/6,d.dt] for d in data if json.loads(d.json_data).get('2')]
-        eclairage_values = [[json.loads(d.json_data).get('3')/6,d.dt] for d in data if json.loads(d.json_data).get('3')]
-        traitement_values = [[json.loads(d.json_data).get('7')/6,d.dt] for d in data if json.loads(d.json_data).get('7')]
+        ventillation_values = [[json.loads(d.json_data).get("2"), d.dt] for d in data]
+        eclairage_values = [[json.loads(d.json_data).get("3"), d.dt] for d in data]
+        assenseur_values = [[json.loads(d.json_data).get("6"), d.dt] for d in data]
+        traitement_values = [[json.loads(d.json_data).get("7"), d.dt] for d in data]
+        puissance_values = []
+        for d in data:
+            ventil = json.loads(d.json_data).get("2")/6 if json.loads(d.json_data).get("2") else 0
+            eclairage = json.loads(d.json_data).get("3")/6 if json.loads(d.json_data).get("3") else 0
+            assenseur = json.loads(d.json_data).get("6")/6 if json.loads(d.json_data).get("6") else 0
+            traitement = json.loads(d.json_data).get("7")/6 if json.loads(d.json_data).get("7") else 0
+            all_val = (
+                ventil,
+                eclairage,
+                assenseur,
+                traitement
+            )
+            puissance_values.append([sum(all_val), d.dt])
 
-        return JsonResponse({"ventilation": ventillation_values, "eclairage": eclairage_values, "traitement": traitement_values})
+        return JsonResponse(
+            {
+                "ventilation": ventillation_values,
+                "eclairage": eclairage_values,
+                "traitement": traitement_values,
+                "puissance": puissance_values,
+                "assenseurs": assenseur_values,
+            }
+        )
