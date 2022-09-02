@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>Test métier Smart Impulse</title>
+	<style type="text/css">
+		body {
+			font: 18px/1.5em Helvetica, Arial, sans-serif;
+		}
+
+		h2 {
+			font: normal 32px Helvetica, Arial, sans-serif;
+		}
+
+		#header {
+			text-align: center;
+			width: 900px;
+			margin: auto;
+		}
+
+		#content {
+			width: 880px;
+			margin: 0 auto;
+			padding: 10px;
+		}
+
+		#main {
+			height: 600px;
+		}
+	</style>
+	<script src="https://cdn.jsdelivr.net/npm/echarts@5.2.1/dist/echarts.js" integrity="sha256-zV9ArBpbKD/jm+76tSTB7DUFS75h/TOOvcjyRA1Ou6Q=" crossorigin="anonymous"></script>
+</head>
+<body>
+
+	<div id="header">
+		<h2>Smart Impulse: Graph example</h2>
+	</div>
+
+	<div id="content">
+
+		<div id="main"></div>
+
+		<p><a href="https://echarts.apache.org/en/index.html">ECharts</a> supports lines, points, filled areas, bars and any combinations of these, in the same plot and even on the same data series.</p>
+
+	</div>
+	<script type="text/javascript">
+		
+		const getter = async(url) =>{
+			let res = await fetch(url);
+			res = await res.json();
+			return res
+		}
+		
+		let line_data = getter('http://localhost:8000/pc');
+		let categories = getter('http://localhost:8000/categories');
+		let installations = getter('http://localhost:8000/categories');
+
+		line_data.then((response) => {
+			console.log(response)
+			const ventil = response.ventilation.map((e)=>[e[1]=new Date(e[1]),e[0]]);
+			const eclairage = response.eclairage.map((e)=>[e[1]=new Date(e[1]),e[0]]);
+			const traitement = response.traitement.map((e)=>[e[1]=new Date(e[1]),e[0]]);
+			const options = {
+
+				xAxis: {
+					type: 'time',
+					name:'Time',
+					axisLine: {
+						symbol: 'arrow',
+						lineStyle: {
+						  type: 'dashed'
+						}
+					  },
+					axisLabel: {
+						rotate: 30
+					  }
+				},
+				legend: {
+					
+				  },
+				yAxis: [
+				{
+				  type: 'value',
+				  name: 'watt',
+				  //min: 0,
+				  //max: 50000,
+				  position: 'right',
+				  axisLabel: {
+					formatter: '{value} watt'
+				  }
+				},
+				{
+				  type: 'value',
+				  name: 'watt',
+				  //min: 0,
+				  //max: 50000,
+				  position: 'left',
+				  axisLabel: {
+					formatter: '{value} watt'
+				  }
+				}
+			  ],
+				series: [
+					{
+						name: "ventillation",
+						data: ventil,
+						type: 'line',
+						areaStyle: {
+							color: '#ff0',
+							opacity: 1
+						  },
+						smooth: true,
+						yAxisIndex: 0,
+						animationDuration: 500,
+						symbol: 'none',
+					},
+					{
+						name: "elcairage",
+						data: eclairage,
+						type: 'line',
+						areaStyle: {
+							color: '#f00',
+							opacity: 0.5
+						  },
+						smooth: true,
+						yAxisIndex: 0,
+						animationDuration: 500,
+						symbol: 'none'
+					},
+					{
+						name: "traitement des eaux",
+						data: traitement,
+						type: 'line',
+						areaStyle: {
+							color: '#0ff',
+							opacity: 1
+						  },
+						smooth: true,
+						yAxisIndex: 0,
+						animationDuration: 500,
+						symbol: 'none'
+					},
+
+				],
+				useUTC: true
+			};
+			const myChart = echarts.init(document.getElementById('main'));
+			myChart.setOption(options);
+		  });
+
+	</script>
+</body>
+</html>
